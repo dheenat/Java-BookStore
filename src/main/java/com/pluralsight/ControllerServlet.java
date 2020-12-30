@@ -52,20 +52,27 @@ public class ControllerServlet extends HttpServlet {
 			switch(action) {
 				case "/admin":
 					 showBookAdmin(request, response);
-           break;
+					 break;
 			  case "/new":
 					showNewForm(request, response);
-          break;
+		          	break;
 				case "/insert":
 					insertBook(request, response);
-          break;
-				default:
-				   listBooks(request, response);
-           break;
-
+		          	break;
 				case "/edit":
 					showEditForm(request, response);
 					break;
+				case "/update":
+					updateBook(request, response);
+					break;
+				case "/delete":
+					deleteBook(request, response);
+					break;
+				default:
+					listBooks(request, response);
+					break;
+
+
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -125,6 +132,17 @@ public class ControllerServlet extends HttpServlet {
 	int id = Integer.parseInt(request.getParameter("id"));
 	bookDAO.deleteBook(id);
 		response.sendRedirect("list");
+	}
+
+	private void updateBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		int id = Integer.parseInt(request.getParameter("id"));
+		String title  = request.getParameter("bookTitle");
+		String author =  request.getParameter("bookAuthor");
+		float price = Float.parseFloat(request.getParameter("bookPrice"));
+		bookDAO.updateBook(new Book(id,title,author,price));
+		response.sendRedirect("list");
+
 	}
 
 	private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
